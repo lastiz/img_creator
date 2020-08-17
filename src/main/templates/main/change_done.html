@@ -1,0 +1,27 @@
+{% extends 'main/layout.html' %}
+
+{% block content %}
+<p><a href="{% url 'main:index' %}">Назад к списку</a></p>
+    <form method="post" enctype="multipart/form-data" action="{% url 'main:detail' pk=img_pk %}">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+    <ul>
+        {% for error in form.non_field_errors %}
+        <li><em>{{ error|escape }}</em></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% for field in form.visible_fields %}
+        {% if field.errors %}
+        <ul>
+            {% for error in field.errors %}
+            <li><em>{{ error|escape }}</em></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <p>{{ field.label_tag }}<br>{{ field }}</p>
+    {% endfor %}
+    <p><button type="submit">Отправить</button></p>
+    </form>
+<img src="{{ new_img_url }}">
+{% endblock content %}
